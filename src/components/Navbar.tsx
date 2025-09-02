@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/providers/ThemeProvider";
 
@@ -44,51 +44,58 @@ export function Navbar() {
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border"
+      className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-lg"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="font-bold text-xl cursor-pointer"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+            className="font-bold text-2xl cursor-pointer bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent flex items-center gap-2"
             onClick={() => scrollToSection("#hero")}
           >
+            <Sparkles className="h-5 w-5 text-primary" />
             RD
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <button
+              <motion.button
                 key={item.name}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => scrollToSection(item.href)}
-                className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg ${
                   activeSection === item.href.slice(1)
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 {item.name}
                 {activeSection === item.href.slice(1) && (
                   <motion.div
                     layoutId="activeSection"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-purple-600 rounded-full"
                   />
                 )}
-              </button>
+              </motion.button>
             ))}
 
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            >
-              {theme === "light" ? (
-                <Moon className="h-4 w-4" />
-              ) : (
-                <Sun className="h-4 w-4" />
-              )}
-            </Button>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className="hover:bg-primary/10 transition-colors"
+              >
+                {theme === "light" ? (
+                  <Moon className="h-5 w-5" />
+                ) : (
+                  <Sun className="h-5 w-5" />
+                )}
+              </Button>
+            </motion.div>
           </div>
 
           {/* Mobile Navigation */}
